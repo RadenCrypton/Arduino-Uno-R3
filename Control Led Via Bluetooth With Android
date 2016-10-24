@@ -1,0 +1,99 @@
+#include <SoftwareSerial.h>// Panggil Serial library
+
+SoftwareSerial BT(10, 11); // pin 10 dan 11 sebagai RX, TX
+int ledpin1 = 2; // led1 pada pin 2
+int ledpin2 = 3; // led2 pada pin 3
+int ledpin3 = 4; // led3 pada pin 4
+int ledpin4 = 5; // led4 pada pin 5
+int ledpin5 = 6; // led5 pada pin 6
+int ledpin6 = 7; // led6 pada pin 7
+int ledpin7 = 8; // led7 pada pin 8
+int ledpin8 = 9; // led8 pada pin 9
+int ledpin9 = 12; // led9 pada pin 12
+int ledpin10= 13; // led10 pada pin 13
+
+int BluetoothData; 
+
+void setup() {
+   BT.begin(9600);
+  pinMode(ledpin1,OUTPUT);
+  pinMode(ledpin2,OUTPUT);
+  pinMode(ledpin3, OUTPUT);
+  pinMode(ledpin4,OUTPUT);
+  pinMode(ledpin5,OUTPUT);
+  pinMode(ledpin6,OUTPUT);
+  pinMode(ledpin7, OUTPUT);
+  pinMode(ledpin8,OUTPUT);
+  pinMode(ledpin9,OUTPUT);
+  pinMode(ledpin10,OUTPUT);
+ }
+
+void loop() {
+     if (BT.available()){
+ BluetoothData=BT.read();
+   if(BluetoothData=='A'){   
+   digitalWrite(ledpin1,HIGH);
+   }
+  if (BluetoothData=='1'){
+  digitalWrite(ledpin1,LOW);
+   }
+    if(BluetoothData=='B'){   
+   digitalWrite(ledpin2,HIGH);
+   }
+  if (BluetoothData=='2'){
+  digitalWrite(ledpin2,LOW);
+   }
+   if(BluetoothData=='C'){   
+   digitalWrite(ledpin3,HIGH);
+   }
+  if (BluetoothData=='3'){
+  digitalWrite(ledpin3,LOW);
+   }
+   if(BluetoothData=='D'){   
+   digitalWrite(ledpin4,HIGH);
+   }
+  if (BluetoothData=='4'){
+  digitalWrite(ledpin4,LOW);
+   }
+   if(BluetoothData=='E'){   
+   digitalWrite(ledpin5,HIGH);
+   }
+  if (BluetoothData=='5'){
+  digitalWrite(ledpin5,LOW);
+   }
+   if(BluetoothData=='F'){   
+   digitalWrite(ledpin6,HIGH);
+   }
+  if (BluetoothData=='6'){
+  digitalWrite(ledpin6,LOW);
+   }
+   if(BluetoothData=='G'){   
+   digitalWrite(ledpin7,HIGH);
+   }
+  if (BluetoothData=='7'){
+  digitalWrite(ledpin7,LOW);
+   }
+   if(BluetoothData=='H'){   
+   digitalWrite(ledpin8,HIGH);
+   }
+  if (BluetoothData=='8'){
+  digitalWrite(ledpin8,LOW);
+   }
+   if(BluetoothData=='I'){   
+   digitalWrite(ledpin9,HIGH);
+   }
+  if (BluetoothData=='9'){
+  digitalWrite(ledpin9,LOW);
+   }
+   if(BluetoothData=='J'){   
+   digitalWrite(ledpin10,HIGH);
+   }
+  if (BluetoothData=='Z'){
+  digitalWrite(ledpin10,LOW);
+   }
+  delay(100);
+}
+}
+
+// file apk in Source
+// https://www.dropbox.com/s/xb4txnkkqnlsyp3/bluetooth_10CH.rar?dl=0
