@@ -1,0 +1,17 @@
+const int pinButton = 2;
+const int pinLed = 13;
+int nilaiButton = 0;
+
+void setup() {
+  pinMode(pinButton, INPUT);
+  pinMode(pinLed, OUTPUT);
+}
+
+void loop() {
+  nilaiButton = digitalRead(pinButton);
+  if (nilaiButton == HIGH) {
+    digitalWrite(pinLed, HIGH);
+  } else { // kalo nilai pin LOW
+    digitalWrite(pinLed, LOW);
+  }
+}
