@@ -2,7 +2,12 @@
 Fungsi debounce berfungsi untuk memastikan bahwa switch tertekan 
 dengan benar dan kembali pada posisi semula
 */
-
+///////// baris deklarasi
+int switchPin = 8;
+int ledPin = 13;
+boolean lastButton = LOW;
+boolean currentButton = LOW;
+boolean ledOn = false;
 //////baris setup
 void setup(){
   pinMode(switchPin, INPUT);
@@ -17,13 +22,6 @@ void loop(){
   lastButton = currentButton;
   digitalWrite(ledPin, ledOn);
 }
-///////// baris deklarasi
-int switchPin = 8;
-int ledPin = 13;
-boolean lastButton = LOW;
-boolean currentButton = LOW;
-boolean ledOn = false;
-
 ///////////// baris ini kebawah saya nggak ngerti
 boolean debounce(boolean last)
 {
