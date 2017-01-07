@@ -29,6 +29,9 @@ boolean kondisi4=0;
 const int relaySirine = 7;
 const int indicatorAlarm = 6;
 const int sign = 10;
+
+///Sound Ping
+int sPing =1;
 void setup() 
 {
 pinMode(sw1,INPUT);
@@ -62,7 +65,7 @@ kondisi1=digitalRead(sw1);
      
 //kondisi lepas
   else if(kondisi1 == 0 && akhirPencet1 == true)
-     { akhirPencet1 = false; }
+     { akhirPencet1 = false; sPing=1;}
 
 ///////////////////////////////////////////////////////////sw2
 kondisi2=digitalRead(sw2);
@@ -74,14 +77,14 @@ kondisi2=digitalRead(sw2);
       
 //kondisi lepas
   else if(kondisi2 == 0 && akhirPencet2 == true)
-     { akhirPencet2 = false; }
+     { akhirPencet2 = false; sPing=1; }
      
 ///////////////////////////////////////////////////////////sw3
 kondisi3=digitalRead(sw3);
 //kondisi tekan
   if (kondisi3 == 1 && akhirPencet3 == false)
      { 
-     aksi31(); 
+     proses(); 
      akhirPencet3 = true ; }
      
 //kondisi lepas
@@ -183,6 +186,17 @@ delay(1000);
 sign0();
 }
 
+void proses()
+{
+  if (sPing==1 && akhirPencet3 == false)
+  {aksi31(); sPing=sPing+1;}
+  else if (sPing==2 && akhirPencet3 == false)
+  {aksi32(); sPing=sPing+1;}
+  else if (sPing==3 && akhirPencet3 == false)
+  {aksi33(); sPing=1;}
+  
+}
+
 void aksi4()
 {
  sign1();
@@ -214,8 +228,3 @@ Pin List and Function:
 13 CLK
  */
  
- //This project with RF Remote Control Wireless 4 Channel 2262 2272 Arduino Raspberry Pi and MicroSD Card Adapter
-
-
-
-
