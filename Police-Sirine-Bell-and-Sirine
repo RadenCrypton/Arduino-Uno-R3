@@ -1,0 +1,67 @@
+int buzzer = 5;
+int i;
+int u;
+int saklar = 8;
+boolean kondisi = false;
+boolean awal=true;
+void setup()
+{
+  pinMode(buzzer, OUTPUT);
+  pinMode(saklar, INPUT);
+}
+void loop() 
+{
+  cek1();
+
+  cek2();
+}
+ 
+void cek1()
+{
+  //tekan pertama
+  kondisi=digitalRead(saklar);
+  if (kondisi==true && awal==true)
+  {a0(); 
+  awal=false;} //go to cek2
+  //lepas setelah klik
+  else if(kondisi==false && awal==false) 
+  {noTone(buzzer); awal=true;}
+}
+
+void cek2()
+{
+  //tekan tahan
+  kondisi=digitalRead(saklar);
+  if (kondisi==true && awal==false)
+  {b(); a1(); }
+  //lepas setelah tahan
+  else
+  {noTone(buzzer); awal=true; }
+}
+
+void a0()//klakson klik
+{
+  int i = 500;
+  while(i < 1000) {
+    i++;
+   tone(buzzer, i); delayMicroseconds(170);
+   }
+}
+
+void a1() //sirine tahan
+{
+  int i = 400;
+  while(i < 900) {
+    i++;
+   tone(buzzer, i); delayMicroseconds(150);
+  } 
+}
+
+void b()
+{
+ int u = 900;
+  while(u >= 400) {
+    u--;
+   tone(buzzer, u); delayMicroseconds(150);
+ }  
+}
