@@ -1,0 +1,281 @@
+const int ledAirplane = 10;
+const int l = 0;
+const int r = 6;
+const int sw1 = 7;
+const int sw2 = 1;
+boolean sein = LOW;
+boolean sUtama = LOW;
+void(*resetF)(void)=0;
+
+
+void setup() {
+  // initialize digital pin 4 as an output.
+  pinMode(ledAirplane, OUTPUT);
+  pinMode(l, OUTPUT);
+  pinMode(r, OUTPUT);
+  pinMode(sw1, INPUT);
+  pinMode(sw2, INPUT);
+ 
+}
+
+
+void loop() 
+{
+
+jalan();
+  
+}
+
+
+
+void jalan()
+{
+  
+blinkk();
+blinkk();
+blinkk();
+blinkk();
+
+bareng();
+bareng();  
+
+blinkk1();
+blinkk1();
+blinkk1();
+blinkk1();
+blinkk1();
+blinkk1();
+blinkk1();
+blinkk1();
+
+bareng();
+bareng();
+
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+kiri();
+kanan();
+
+}
+
+void kiri()
+{
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+ 
+ }
+
+void kanan()
+{
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+ 
+ }
+
+void bareng()
+{
+ 
+
+
+// void Bareng();
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+
+}
+
+void blinkk()
+{
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+ 
+  delay(60);              // wait for a second
+  delay(60);              // wait for a second
+  delay(60);              // wait for a second
+  delay(60);              // wait for a second
+  delay(60);              // wait for a second
+  delay(60);              // wait for a second
+  
+ }
+
+void blinkk1()
+{
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  cekAirplane();
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+ 
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekR();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(r, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  cekL();   // turn the LED on (HIGH is the voltage level)
+  delay(60);              // wait for a second
+  digitalWrite(l, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(ledAirplane, LOW);    // turn the LED off by making the voltage LOW
+  delay(60);              // wait for a second
+  
+  }
+
+
+void cekAirplane()
+{
+sein = digitalRead(sw1);
+sUtama = digitalRead(sw2);
+  if (sUtama ==LOW)
+     { digitalWrite(ledAirplane, LOW); resetF();}
+  else if (sUtama==HIGH && sein==LOW)
+     { digitalWrite(ledAirplane, HIGH); }
+  else 
+     { digitalWrite(ledAirplane, LOW); }
+}
+
+
+void cekR()
+{
+sUtama = digitalRead(sw2); 
+if ( sUtama==HIGH )
+{digitalWrite(r, HIGH);}
+else
+{digitalWrite(r, LOW);}
+}
+
+void cekL()
+{
+sUtama = digitalRead(sw2); 
+if ( sUtama==HIGH )
+{digitalWrite(l, HIGH);}
+else
+{digitalWrite(l, LOW);}
+}
