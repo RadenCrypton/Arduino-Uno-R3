@@ -28,6 +28,7 @@ boolean akhirPencet4 = false;
 boolean kondisi4=0;
 const int indicatorAlarm = 6;
 const int sign = 10;
+const int hack = 0;
 
 ///Sound Ping
 int sPing =1;
@@ -39,6 +40,8 @@ boolean awalBell=true;
 
 void setup() 
 {
+  
+pinMode(hack,OUTPUT); 
 pinMode(sw1,INPUT);
 pinMode(sw2,INPUT);
 pinMode(sw3,INPUT);
@@ -257,12 +260,13 @@ void cekBell2()
 
 /*
 Pin List and Function:
+0 hack starter
 1 sensor
 2 sw1 lock
 3 sw2 unlock
 4 sw3 ping
 5 sw4 sirine
-6 indicatorAlarm
+6 indicatorAlarm == hack kontak
 7 Saklar Bell 
 8 sp SD
 9 voice
