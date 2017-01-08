@@ -7,7 +7,7 @@ TMRpcm tmrpcm;
 //MonitorAlarm
 const int sensor=1;
 boolean akhirPencetAlarm= false;
-boolean kondisiAlarm=0;
+boolean kontakOn=false;
 boolean alarmOn=false;
 boolean adaPencuri=false;
 //sw1
@@ -28,7 +28,6 @@ boolean akhirPencet4 = false;
 boolean kondisi4=0;
 const int indicatorAlarm = 6;
 const int sign = 10;
-const int hack = 0;
 
 ///Sound Ping
 int sPing =1;
@@ -40,8 +39,6 @@ boolean awalBell=true;
 
 void setup() 
 {
-  
-pinMode(hack,OUTPUT); 
 pinMode(sw1,INPUT);
 pinMode(sw2,INPUT);
 pinMode(sw3,INPUT);
@@ -114,9 +111,9 @@ kondisi4=digitalRead(sw4);
      { akhirPencet4 = false; }
 
 //////////////////////////////////////////////////////MonitorAlarm
-kondisiAlarm=digitalRead(sensor);
+kontakOn=digitalRead(sensor);
 //kondisi kontak On
-  if (kondisiAlarm == 1 && alarmOn == true)
+  if (kontakOn == true && alarmOn == true)
      { 
       adaPencuri=true;
      }
@@ -244,7 +241,7 @@ void cekBell2()
 {
   //tekan tahan
   kondisiBell=digitalRead(saklarBell);
-  if (kondisiBell==true && awalBell==false)
+  if (kondisiBell==true && awalBell==false )
   {
     
     tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign1(); delay(340);
@@ -260,7 +257,6 @@ void cekBell2()
 
 /*
 Pin List and Function:
-0 hack starter
 1 sensor
 2 sw1 lock
 3 sw2 unlock
