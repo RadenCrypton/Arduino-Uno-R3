@@ -129,7 +129,10 @@ if (adaPencuri==true)
 //Monitor Bell
   cekBell1();
   cekBell2();
-
+  
+//Reset sPing  
+if (kontakOn)
+{sPing=1;}
 }
 
 void sign0()
