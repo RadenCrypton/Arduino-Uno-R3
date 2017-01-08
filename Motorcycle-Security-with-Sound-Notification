@@ -26,23 +26,29 @@ boolean kondisi3=0;
 const int sw4=5;
 boolean akhirPencet4 = false;
 boolean kondisi4=0;
-
-const int relaySirine = 7;
 const int indicatorAlarm = 6;
 const int sign = 10;
 
 ///Sound Ping
 int sPing =1;
+
+//Bell Sirine
+int saklarBell = 7;
+boolean kondisiBell = false;
+boolean awalBell=true;
+
 void setup() 
 {
 pinMode(sw1,INPUT);
 pinMode(sw2,INPUT);
 pinMode(sw3,INPUT);
 pinMode(sw4,INPUT);
-pinMode(relaySirine,OUTPUT);
 pinMode(sign, OUTPUT);
 pinMode(indicatorAlarm,OUTPUT);
+pinMode(saklarBell, INPUT);
+
 digitalWrite(indicatorAlarm,0);
+
 //Wav
 tmrpcm.speakerPin = 9;//6
 //Serial.begin(9600);
@@ -107,24 +113,21 @@ kondisi4=digitalRead(sw4);
 //////////////////////////////////////////////////////MonitorAlarm
 kondisiAlarm=digitalRead(sensor);
 //kondisi kontak On
-  if (kondisiAlarm == 1 && akhirPencetAlarm == false && alarmOn == true)
+  if (kondisiAlarm == 1 && alarmOn == true)
      { 
       adaPencuri=true;
-      
-      akhirPencetAlarm = true ; }
-      
-//kondisi lepas
-  else if(kondisiAlarm == 0 && akhirPencetAlarm == true)
-     { akhirPencetAlarm = false; }
+     }
 
 ////Alarm Pencuri     
 if (adaPencuri==true)
 {
-  tmrpcm.setVolume(5);tmrpcm.play("a1.wav"); delay(340);
- // tmrpcm.setVolume(5);tmrpcm.play("a0.wav"); delay(211);
+    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign1(); delay(340);
+    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign0(); delay(340);
 }
 
-
+//Monitor Bell
+  cekBell1();
+  cekBell2();
 
 }
 
@@ -148,7 +151,6 @@ delay(211);
 tmrpcm.play("a0.wav");
 delay(211);
 //
-digitalWrite(relaySirine,0);
 adaPencuri=false;
 alarmOn=true;
 digitalWrite(indicatorAlarm,1);
@@ -168,7 +170,6 @@ delay(211);
 tmrpcm.play("a0.wav");
 delay(211);
 //
-digitalWrite(relaySirine,0);
 adaPencuri=false;
 alarmOn=false;
 digitalWrite(indicatorAlarm,0);
@@ -215,16 +216,44 @@ void proses()
 
 void aksi4()
 {
-
-sign1();
-tmrpcm.setVolume(5);
-tmrpcm.play("a0.wav");
-delay(211);
-tmrpcm.play("a0.wav");
-delay(211);
-sign0();
+tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211);
+tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211);
 
 }
+
+
+void cekBell1()
+{
+  //tekan pertama
+  kondisiBell=digitalRead(saklarBell);
+  if (kondisiBell==true && awalBell==true)
+  {
+  tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); delay(211);
+  sign0();
+  awalBell=false;  //go to cekBell2
+  }
+  //lepas setelah klik
+  else if(kondisiBell==false && awalBell==false) 
+  {awalBell=true; sign0();}
+}
+
+void cekBell2()
+{
+  //tekan tahan
+  kondisiBell=digitalRead(saklarBell);
+  if (kondisiBell==true && awalBell==false)
+  {
+    
+    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign1(); delay(340);
+   
+    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign0(); delay(340);
+    
+  }
+  //lepas setelah tahan
+  else
+  {awalBell=true; sign0(); }
+}
+
 
 /*
 Pin List and Function:
@@ -234,7 +263,7 @@ Pin List and Function:
 4 sw3 ping
 5 sw4 sirine
 6 indicatorAlarm
-7 Relay sirine 
+7 Saklar Bell 
 8 sp SD
 9 voice
 10 sign/indicatorSign
