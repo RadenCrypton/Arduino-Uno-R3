@@ -228,3 +228,250 @@ Pin List and Function:
 13 CLK
  */
  
+//////////////////////////////////////////////////// With Sirine WAV file ////////////////////////////////////////////////////
+
+//Wav
+#include "SD.h"
+#define SD_ChipSelectPin 8
+#include "TMRpcm.h"
+#include "SPI.h"
+TMRpcm tmrpcm;
+//MonitorAlarm
+const int sensor=1;
+boolean akhirPencetAlarm= false;
+boolean kondisiAlarm=0;
+boolean alarmOn=false;
+boolean adaPencuri=false;
+//sw1
+const int sw1=2;
+boolean akhirPencet1= false;
+boolean kondisi1=0;
+//sw2
+const int sw2=3;
+boolean akhirPencet2= false;
+boolean kondisi2=0;
+//sw3
+const int sw3=4;
+boolean akhirPencet3 = false;
+boolean kondisi3=0;
+//sw4
+const int sw4=5;
+boolean akhirPencet4 = false;
+boolean kondisi4=0;
+
+const int relaySirine = 7;
+const int indicatorAlarm = 6;
+const int sign = 10;
+
+///Sound Ping
+int sPing =1;
+void setup() 
+{
+pinMode(sw1,INPUT);
+pinMode(sw2,INPUT);
+pinMode(sw3,INPUT);
+pinMode(sw4,INPUT);
+pinMode(relaySirine,OUTPUT);
+pinMode(sign, OUTPUT);
+pinMode(indicatorAlarm,OUTPUT);
+digitalWrite(indicatorAlarm,0);
+//Wav
+tmrpcm.speakerPin = 9;//6
+//Serial.begin(9600);
+if (!SD.begin(SD_ChipSelectPin))
+{
+//  Serial.println("SD fail"); return;
+  }
+else
+{ aksi4(); }
+
+}
+void loop() 
+{
+//////////////////////////////////////////////////////////sw1
+kondisi1=digitalRead(sw1);
+//kondisi tekan
+  if (kondisi1 == 1 && akhirPencet1 == false)
+     { 
+     aksi1(); 
+     akhirPencet1 = true ; }
+     
+//kondisi lepas
+  else if(kondisi1 == 0 && akhirPencet1 == true)
+     { akhirPencet1 = false; sPing=1;}
+
+///////////////////////////////////////////////////////////sw2
+kondisi2=digitalRead(sw2);
+//kondisi tekan
+  if (kondisi2 == 1 && akhirPencet2 == false)
+     {
+      aksi2();
+      akhirPencet2 = true ; }
+      
+//kondisi lepas
+  else if(kondisi2 == 0 && akhirPencet2 == true)
+     { akhirPencet2 = false; sPing=1; }
+     
+///////////////////////////////////////////////////////////sw3
+kondisi3=digitalRead(sw3);
+//kondisi tekan
+  if (kondisi3 == 1 && akhirPencet3 == false)
+     { 
+     proses(); 
+     akhirPencet3 = true ; }
+     
+//kondisi lepas
+  else if(kondisi3 == 0 && akhirPencet3 == true)
+     { akhirPencet3 = false; }
+
+//////////////////////////////////////////////////////////sw4
+kondisi4=digitalRead(sw4);
+//kondisi tekan
+  if (kondisi4 == 1 && akhirPencet4 == false)
+     { 
+      aksi4();
+      akhirPencet4 = true ; }
+      
+//kondisi lepas
+  else if(kondisi4 == 0 && akhirPencet4 == true)
+     { akhirPencet4 = false; }
+
+//////////////////////////////////////////////////////MonitorAlarm
+kondisiAlarm=digitalRead(sensor);
+//kondisi kontak On
+  if (kondisiAlarm == 1 && akhirPencetAlarm == false && alarmOn == true)
+     { 
+      adaPencuri=true;
+      
+      akhirPencetAlarm = true ; }
+      
+//kondisi lepas
+  else if(kondisiAlarm == 0 && akhirPencetAlarm == true)
+     { akhirPencetAlarm = false; }
+
+////Alarm Pencuri     
+if (adaPencuri==true)
+{
+  tmrpcm.setVolume(5);tmrpcm.play("a1.wav"); delay(340);
+ // tmrpcm.setVolume(5);tmrpcm.play("a0.wav"); delay(211);
+}
+
+
+
+}
+
+void sign0()
+{
+digitalWrite(sign,0);  
+}
+
+void sign1()
+{
+digitalWrite(sign,1);  
+}
+
+void aksi1()
+{
+sign1();
+//
+tmrpcm.setVolume(5);
+tmrpcm.play("a0.wav");
+delay(211);
+tmrpcm.play("a0.wav");
+delay(211);
+//
+digitalWrite(relaySirine,0);
+adaPencuri=false;
+alarmOn=true;
+digitalWrite(indicatorAlarm,1);
+tmrpcm.setVolume(5);
+tmrpcm.play("lock.wav");
+delay(1000);
+sign0();
+}
+
+void aksi2()
+{
+sign1();
+//
+tmrpcm.setVolume(5);
+tmrpcm.play("a0.wav");
+delay(211);
+tmrpcm.play("a0.wav");
+delay(211);
+//
+digitalWrite(relaySirine,0);
+adaPencuri=false;
+alarmOn=false;
+digitalWrite(indicatorAlarm,0);
+tmrpcm.setVolume(5);
+tmrpcm.play("unlock.wav");
+delay(1200);
+sign0();
+}
+
+void aksi31()
+{
+sign1();
+tmrpcm.setVolume(5);
+tmrpcm.play("ping1.wav");
+delay(1000);sign0();
+}
+void aksi32()
+{
+sign1();
+tmrpcm.setVolume(5);
+tmrpcm.play("ping2.wav");
+delay(1000);
+sign0();
+}
+void aksi33()
+{
+sign1();
+tmrpcm.setVolume(5);
+tmrpcm.play("ping3.wav");
+delay(1000);
+sign0();
+}
+
+void proses()
+{
+  if (sPing==1 && akhirPencet3 == false)
+  {aksi31(); sPing=sPing+1;}
+  else if (sPing==2 && akhirPencet3 == false)
+  {aksi32(); sPing=sPing+1;}
+  else if (sPing==3 && akhirPencet3 == false)
+  {aksi33(); sPing=1;}
+  
+}
+
+void aksi4()
+{
+
+sign1();
+tmrpcm.setVolume(5);
+tmrpcm.play("a0.wav");
+delay(211);
+tmrpcm.play("a0.wav");
+delay(211);
+sign0();
+
+}
+
+/*
+Pin List and Function:
+1 sensor
+2 sw1 lock
+3 sw2 unlock
+4 sw3 ping
+5 sw4 sirine
+6 indicatorAlarm
+7 Relay sirine 
+8 sp SD
+9 voice
+10 sign/indicatorSign
+11. MOSI
+12 MISO
+13 CLK
+ */
+ 
