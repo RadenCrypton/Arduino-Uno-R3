@@ -62,6 +62,7 @@ else
 }
 void loop() 
 {
+noTone(9);
 //////////////////////////////////////////////////////////sw1
 kondisi1=digitalRead(sw1);
 //kondisi tekan
@@ -156,7 +157,7 @@ alarmOn=true;
 digitalWrite(indicatorAlarm,1);
 tmrpcm.setVolume(5);
 tmrpcm.play("lock.wav");
-delay(1000);
+delay(929);
 sign0();
 }
 
@@ -175,7 +176,7 @@ alarmOn=false;
 digitalWrite(indicatorAlarm,0);
 tmrpcm.setVolume(5);
 tmrpcm.play("unlock.wav");
-delay(1200);
+delay(1571);
 sign0();
 }
 
@@ -184,14 +185,14 @@ void aksi31()
 sign1();
 tmrpcm.setVolume(5);
 tmrpcm.play("ping1.wav");
-delay(1000);sign0();
+delay(705);sign0();
 }
 void aksi32()
 {
 sign1();
 tmrpcm.setVolume(5);
 tmrpcm.play("ping2.wav");
-delay(1000);
+delay(710);
 sign0();
 }
 void aksi33()
@@ -199,7 +200,7 @@ void aksi33()
 sign1();
 tmrpcm.setVolume(5);
 tmrpcm.play("ping3.wav");
-delay(1000);
+delay(1234);
 sign0();
 }
 
@@ -271,3 +272,4 @@ Pin List and Function:
 12 MISO
 13 CLK
  */
+ 
