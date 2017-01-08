@@ -226,7 +226,7 @@ void cekBell1()
 {
   //tekan pertama
   kondisiBell=digitalRead(saklarBell);
-  if (kondisiBell==true && awalBell==true && kontakOn=true)
+  if (kondisiBell==true && awalBell==true && kontakOn==true)
   {
   tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); delay(211);
   sign0();
