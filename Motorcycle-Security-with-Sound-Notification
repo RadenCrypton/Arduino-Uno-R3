@@ -32,10 +32,11 @@ const int sign = 10;
 ///Sound Ping
 int sPing =1;
 
-//Bell Sirine
+//Bell file Sirine
 int saklarBell = 7;
 boolean kondisiBell = false;
 boolean awalBell=true;
+
 
 void setup() 
 {
@@ -57,7 +58,8 @@ if (!SD.begin(SD_ChipSelectPin))
 //  Serial.println("SD fail"); return;
   }
 else
-{ aksi4(); }
+{ tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211);
+tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211); }
 
 }
 void loop() 
@@ -155,10 +157,11 @@ delay(211);
 tmrpcm.play("a0.wav");
 delay(211);
 //
+delay(300);
 adaPencuri=false;
 alarmOn=true;
 digitalWrite(indicatorAlarm,1);
-tmrpcm.setVolume(5);
+tmrpcm.setVolume(4);
 tmrpcm.play("lock.wav");
 delay(929);
 sign0();
@@ -174,10 +177,11 @@ delay(211);
 tmrpcm.play("a0.wav");
 delay(211);
 //
+delay(300);
 adaPencuri=false;
 alarmOn=false;
 digitalWrite(indicatorAlarm,0);
-tmrpcm.setVolume(5);
+tmrpcm.setVolume(4);
 tmrpcm.play("unlock.wav");
 delay(1571);
 sign0();
@@ -186,14 +190,14 @@ sign0();
 void aksi31()
 {
 sign1();
-tmrpcm.setVolume(5);
+tmrpcm.setVolume(4);
 tmrpcm.play("ping1.wav");
 delay(705);sign0();
 }
 void aksi32()
 {
 sign1();
-tmrpcm.setVolume(5);
+tmrpcm.setVolume(4);
 tmrpcm.play("ping2.wav");
 delay(710);
 sign0();
@@ -201,7 +205,7 @@ sign0();
 void aksi33()
 {
 sign1();
-tmrpcm.setVolume(5);
+tmrpcm.setVolume(4);
 tmrpcm.play("ping3.wav");
 delay(1234);
 sign0();
@@ -220,9 +224,7 @@ void proses()
 
 void aksi4()
 {
-tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211);
-tmrpcm.setVolume(5); tmrpcm.play("a0.wav"); sign1(); delay(211);
-
+tmrpcm.setVolume(5); tmrpcm.play("telolet.wav"); sign1(); delay(1461); sign0(); delay(287); sign1(); delay(1287);
 }
 
 
@@ -247,16 +249,16 @@ void cekBell2()
   kondisiBell=digitalRead(saklarBell);
   if (kondisiBell==true && awalBell==false && kontakOn==true)
   {
-    
-    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign1(); delay(340);
-   
-    tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign0(); delay(340);
+
+   tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign1(); delay(340);
+   tmrpcm.setVolume(5); tmrpcm.play("a1.wav"); sign0(); delay(340);
     
   }
   //lepas setelah tahan
   else
   {awalBell=true; sign0(); }
 }
+
 
 
 /*
