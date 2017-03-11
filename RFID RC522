@@ -1,6 +1,6 @@
 /*******************************************************
 Program  : ARDUINO dengan RFID MFRC-522
-Chip     : Arduino Uno
+Blog     : http://tempatbelajararduino.blogspot.co.id
 ********************************************************/
 
 #include <SPI.h> 
@@ -9,10 +9,13 @@ Chip     : Arduino Uno
 #define SS_PIN 10
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN); 
- 
+String baca; 
+String simpan;
 void setup() 
 {
-
+  pinMode(2,OUTPUT);
+  digitalWrite(2,1); delay(50);
+  digitalWrite(2,0); delay(25);
   Serial.begin(9600);   
   SPI.begin();      
   mfrc522.PCD_Init();   
@@ -30,20 +33,30 @@ void loop()
   {
     return;
   }
-  Serial.print("UID tag :");
+  Serial.print("UID tag dari Hex:");
   String content= "";
   byte letter;
   for (byte i = 0; i < mfrc522.uid.size; i++) 
   {
-     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
      Serial.print(mfrc522.uid.uidByte[i], HEX);
-     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
-     content.concat(String(mfrc522.uid.uidByte[i], HEX));
+     baca=String(mfrc522.uid.uidByte[i], HEX);
+     baca.toUpperCase();
+     simpan=simpan+baca;
+     digitalWrite(2,1); delay(50);
+     digitalWrite(2,0); delay(25);
   }
-  Serial.println();
-  delay(2000);
-} 
 
-//http://ramanewss.blogspot.com/2016/10/tutorial-cara-menggunakan-rfid-reader.html#
+   Serial.println();
+   Serial.print("Terbaca String :");Serial.print(simpan);
+   Serial.println();
+   
+   Serial.println();
+   delay(700);   
+   if (simpan=="FD8B16CB")
+   {digitalWrite(2,1); delay(250);digitalWrite(2,0); delay(250);digitalWrite(2,1); delay(250);digitalWrite(2,0); delay(250);digitalWrite(2,1); delay(250);digitalWrite(2,0); delay(250);}
+   else
+   {digitalWrite(2,1); delay(1000);digitalWrite(2,0); delay(50);}
+   simpan=("");
+} 
 //Library
 //https://www.dropbox.com/s/orvnprvlp7f767r/RfidLib.zip?dl=0
