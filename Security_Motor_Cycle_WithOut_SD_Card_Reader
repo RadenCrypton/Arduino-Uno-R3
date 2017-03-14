@@ -1,0 +1,288 @@
+#include <SPI.h> 
+#include <MFRC522.h> 
+#define RST_PIN 5
+#define SS_PIN 6 //SDA
+MFRC522 mfrc522(SS_PIN, RST_PIN); 
+
+#include <toneAC.h>
+
+String bacaRF;
+String simpanRF;
+String passRF = "657A2377";
+const int pinKontak = 2; 
+const int pinSign = 3; 
+const int pinBell = 4; 
+//const int pinSuara = 9; 
+const int pinCDI = 6;
+boolean kontak = false;
+boolean CDI = true;
+boolean alarm = true; 
+boolean bell = false;
+boolean klik = false;
+boolean adaPencuri = false;
+boolean sirine = false;
+boolean bling = HIGH;
+boolean adaAdmin = false;
+boolean modeHazard=false;
+
+//Millis
+unsigned long mulaiMillis = 0;
+const long jedaSeparuh = 250;
+const long jedaPenuh = 500;
+unsigned long sekarangMillis = millis();
+void setup() 
+{
+pinMode(pinKontak,INPUT);
+pinMode(pinSign,OUTPUT);
+pinMode(pinBell,INPUT);
+//pinMode(pinSuara,OUTPUT);
+pinMode(pinCDI,OUTPUT);
+ 
+//RFID
+  Serial.begin(9600);   
+  SPI.begin();      
+  mfrc522.PCD_Init();   
+  Serial.println("Dekatkan Tag RFID (Dapat berupa kartu atau gantungan kunci) ke RFID reader");
+  Serial.println();
+toneAC(888,1); delay(300); toneAC(); 
+/*
+int i=80;
+while (i < 200)
+{ i++; 
+Serial.print("toneAC "); Serial.println(i); 
+toneAC(i,1); delay(170); toneAC();  
+delay(70); 
+toneAC(i,1); delay(170); toneAC(); 
+delay(1000); 
+}
+*/
+}//setup
+
+void hazard()
+{
+  unsigned long sekarangMillis = millis();
+  ////Millis Sign Off
+  if (sekarangMillis - mulaiMillis >= jedaSeparuh) 
+  {
+    // save the last time you blinked the LED
+   digitalWrite(pinSign,HIGH); Serial.print("nyala");
+  }
+  /////Millis Sign Off
+  if (sekarangMillis - mulaiMillis >= jedaPenuh) 
+  {
+    // save the last time you blinked the LED
+    mulaiMillis = sekarangMillis;
+   digitalWrite(pinSign,LOW); Serial.print("mati");
+  }
+}
+
+void tekanBell()
+{
+  //tekan pertama
+  bell=digitalRead(pinBell);
+  if (bell==true && klik==true && kontak==true)
+  {digitalWrite(pinSign,HIGH); toneAC(110,10); delay(170); toneAC(); //180
+  klik=false;} //go to cek2
+  //lepas setelah klik
+  else if(bell==false && klik==false) 
+  {digitalWrite(pinSign,LOW);  toneAC(); klik=true;}
+}
+void tahanBell()
+{
+  //tekan tahan
+  bell=digitalRead(pinBell);
+  if (bell==true && klik==false && kontak==true)
+  { 
+    if (bling == LOW) 
+    {bling = HIGH;} 
+    else
+    {bling = LOW;}
+
+    Serial.print(bling);
+    digitalWrite(pinSign, bling);
+    suara(); }
+  //lepas setelah tahan
+  else if(bell==false && klik==false)
+  {digitalWrite(pinSign,LOW);  toneAC(); klik=true; bling=HIGH; }
+}
+void show()
+{
+ if (CDI==true)
+{Serial.print("CDI on / ");}
+else
+{Serial.print("CDI off / ");}
+  
+kontak=digitalRead(pinKontak);
+delay(10);
+if (kontak==true)
+{Serial.print("kontak on / ");}
+else
+{Serial.print("kontak off / ");} 
+if (alarm==true)
+{Serial.print("alarm on / ");}
+else
+{Serial.print("alarm off / ");} 
+if (adaAdmin==true)
+{Serial.print("with admin / ");}
+else
+{Serial.print("lost admin / ");} 
+if (simpanRF!=""){Serial.print(simpanRF);}
+if (modeHazard==true){Serial.println("hazard on / ");}else{Serial.println("hazard off / ");}
+//if (pinSign==HIGH){Serial.println("sign on / ");}else{Serial.println("sign off / ");}
+
+}//void show
+void suara()
+{
+  int i = 400;
+  while(i < 800) { i++; toneAC(i,10); delayMicroseconds(250);}
+  
+  int u = 800;
+  while(u >= 400) { u--; toneAC(u,10); delayMicroseconds(250);}
+}
+void scanRF()
+{
+ if ( ! mfrc522.PICC_IsNewCardPresent()) 
+  {
+    return;
+  }
+  if ( ! mfrc522.PICC_ReadCardSerial()) 
+  {
+    return;
+  }
+  
+  
+
+  byte letter;
+  for (byte sc = 0; sc < mfrc522.uid.size; sc++) 
+  {
+//sementara     digitalWrite(pinSign,LOW);  
+     toneAC();
+     bacaRF=String(mfrc522.uid.uidByte[sc], HEX);
+     bacaRF.toUpperCase();
+     simpanRF=simpanRF+bacaRF;
+   
+  }
+   digitalWrite(pinSign,HIGH);  toneAC(888,1); delay(100); digitalWrite(pinSign,LOW);  toneAC(); 
+   delay(100);
+   digitalWrite(pinSign,HIGH);  toneAC(888,1); delay(100); digitalWrite(pinSign,LOW);  toneAC(); 
+   delay(500);   
+   if (simpanRF==passRF)//657A2377
+
+   { Serial.println("Hello Admin :" +simpanRF); }
+   else
+   {Serial.println("ILEGAL :" +simpanRF); simpanRF=""; alarm=true; digitalWrite(pinSign,HIGH);  toneAC(888,1); delay(1000); digitalWrite(pinSign,LOW);  toneAC(); }
+}
+
+void syncCDI()
+{
+//5.  jika ada pencuri dan kontak on { CDI off}
+   if (adaPencuri==true && kontak==true)
+   {CDI=false;} 
+//6.  jika ada pencuri dan kontak off { CDI on}
+   if (adaPencuri==true && kontak==false)
+   {CDI=true;}
+}
+
+
+void loop() ///////////////////////////////////////////////////////////////////////////////
+{
+  
+//cleaning simpanRF
+simpanRF="";
+  
+show();
+tekanBell();
+tahanBell();
+
+//if (adaAdmin==false && kontak==false){scanRF();}
+if (simpanRF=="" ){scanRF();}
+
+//nyalakan hazard dgn RF
+if(adaAdmin==true && simpanRF==passRF && modeHazard==false){modeHazard=true; simpanRF="";}
+if(adaAdmin==true && simpanRF==passRF && modeHazard==true){modeHazard=false; simpanRF="";}
+if(modeHazard==true){hazard();}
+if (kontak==false && modeHazard==true) {modeHazard=false; digitalWrite(pinSign,LOW);}
+
+
+//2.  Jika kontak off dan kartu benar / akan digunakan{alarm off dan CDI on} 
+  if (kontak==false && simpanRF==passRF && sirine==false)
+  {
+  simpanRF="";
+  int mulai=0;
+  int d = 0;
+
+  while(d < 100) 
+  { d++; alarm=false; adaAdmin=true; delay(50); 
+  
+  if (d-mulai>=20 && d<100){mulai=d; toneAC(666,1); delay(100); toneAC(); 
+  Serial.print("alarm on dlm 5 dtk "); Serial.print(100 - d); Serial.print(" / "); }  
+  
+ if (kontak==true && d < 100){alarm=false; d=100; adaAdmin=true;} 
+ if (kontak==false && d >= 100){alarm=true; adaAdmin=false; digitalWrite(pinSign,HIGH);  toneAC(888,1); delay(300); toneAC(); digitalWrite(pinSign,LOW); } //waktu tunggu habis
+ show();
+    }//perulangan
+  }//jika scan
+
+  //3.  Jika kontak on dan alarm on { ada  pencuri}   
+   if (kontak==true && alarm==true && adaAdmin==false )
+  {adaPencuri=true;}
+  
+//4.  jika ada pencuri { sirine on}
+   if (adaPencuri==true)
+  {sirine=true;
+    int s = 0; while (s < 20){
+      if (bling == LOW) 
+    {bling = HIGH;} 
+    else
+    {bling = LOW;}
+     digitalWrite(pinSign,bling); suara(); syncCDI(); Serial.print("sirine "); Serial.print(s); Serial.print(" / "); show(); scanRF(); 
+       if (simpanRF==passRF && sirine==true){digitalWrite(pinSign,LOW); toneAC(); bling=LOW; simpanRF=""; s=30; sirine=false; adaPencuri=false;}s++; } digitalWrite(pinSign,LOW); toneAC(); bling=LOW; simpanRF=""; s=30; sirine=false; adaPencuri=false;}//if ada pencuri
+  
+//jika adimn selesai menggunakan {alarm on dlm 5 dtk }
+if (adaAdmin==true && kontak==false)
+{ 
+int x =0;
+while(x<100)
+{x++; delay(50);  
+
+  if (x==80){toneAC(666,1); delay(100); toneAC(); 
+  Serial.print("1 detik lagi");  }
+
+if (kontak==true && x < 100){alarm=false; x=100; adaAdmin=true;} 
+if (kontak==false && x >= 100){alarm=true; adaAdmin=false; digitalWrite(pinSign,HIGH);  toneAC(888,1); delay(300); digitalWrite(pinSign,LOW);  toneAC();} //waktu tunggu habis
+show();
+   }//while
+}
+  
+
+
+  
+}//loop
+
+/*
+Pin List && Function:
+//2   Kontak
+//3   Sign to Relay
+//4   Bell
+//5   RST 522
+//6   SDA 522
+//7
+//8
+//9   toneAC
+//10  toneAC 
+//11  MOSI 522
+//12  MISO 522
+//13  CLK 522
+
+CDI to Relay
+ */
+
+/* Revisi 3.0
+1.  Jika kontak off  {alarm on 1x}
+2.  Jika kontak off dan kartu benar { alarm off }
+3.  Jika kontak on dan kartu salah { ada  pencuri, CDI off}
+4.  Jika alarm off dan kontak on {alarm off dan CDI on loop }
+5.  
+6.  Jika ada pencuri {sirine 20x}
+7.  
+*/
