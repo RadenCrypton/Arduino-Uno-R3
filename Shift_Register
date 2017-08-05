@@ -1,0 +1,51 @@
+//Pin connected to ST_CP of 74HC595
+int latchPin = 8;
+//Pin connected to SH_CP of 74HC595
+int clockPin = 12;
+////Pin connected to DS of 74HC595
+int dataPin = 11;
+ byte H = B01101110;
+ byte E = B10011110;
+ byte R = B10001100;
+ byte U = B01111100;
+ 
+ 
+void setup() {
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() 
+{
+digitalWrite(latchPin, LOW);
+shiftOut(dataPin, clockPin, MSBFIRST, H );  
+Serial.print("H=");
+Serial.println(H);
+digitalWrite(latchPin, HIGH);
+delay(500);
+
+digitalWrite(latchPin, LOW);
+shiftOut(dataPin, clockPin, MSBFIRST, E );  
+Serial.print("E=");
+Serial.println(E);
+digitalWrite(latchPin, HIGH);
+delay(500);
+
+digitalWrite(latchPin, LOW);
+shiftOut(dataPin, clockPin, MSBFIRST, R );  
+Serial.print("R=");
+Serial.println(R);
+digitalWrite(latchPin, HIGH);
+delay(500);
+
+digitalWrite(latchPin, LOW);
+shiftOut(dataPin, clockPin, MSBFIRST, U );  
+Serial.print("U=");
+Serial.println(U);
+digitalWrite(latchPin, HIGH);
+delay(500);
+
+
+}
