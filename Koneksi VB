@@ -1,0 +1,56 @@
+void setup(){
+  Serial.begin(9600);
+  Serial.setTimeout(50);
+  pinMode(2,OUTPUT);
+  pinMode(3,OUTPUT);
+  pinMode(4,OUTPUT);
+  pinMode(5,OUTPUT);
+  
+}
+
+String message;
+
+void loop()
+{
+  while(Serial.available())
+  {message=Serial.readString();}
+
+  if(message=="LED1 ON")
+  {digitalWrite(2,1); }
+  else if(message=="LED1 OFF")
+  {digitalWrite(2,0); }
+
+  if(message=="LED2 ON")
+  {digitalWrite(3,1); }
+  else if(message=="LED2 OFF")
+  {digitalWrite(3,0); }
+
+  if(message=="LED3 ON")
+  {digitalWrite(4,1); }
+  else if(message=="LED3 OFF")
+  {digitalWrite(4,0); }
+
+  if(message=="LED4 ON")
+  {digitalWrite(5,1); }
+  else if(message=="LED4 OFF")
+  {digitalWrite(5,0); }
+
+  if(message=="LEDALL ON")
+  {
+    digitalWrite(2,1); 
+    digitalWrite(3,1); 
+    digitalWrite(4,1); 
+    digitalWrite(5,1); 
+  
+  }
+  else if(message=="LEDALL OFF")
+  {
+    digitalWrite(2,0); 
+    digitalWrite(3,0); 
+    digitalWrite(4,0); 
+    digitalWrite(5,0); 
+    
+  }
+
+    
+}
