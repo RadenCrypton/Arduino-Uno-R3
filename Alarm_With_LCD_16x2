@@ -1,0 +1,151 @@
+// Connection Pin
+// https://2.bp.blogspot.com/-Tsk3J2tQwbc/WMTdcynYnGI/AAAAAAAAAcU/s8z8gvbR7RgOPIFavYVfLL6T5qDXD4b_wCLcB/s1600/Arduino-LCD-I2C.png
+
+#include <Wire.h>  // i2C Conection Library
+#include <LiquidCrystal_I2C.h>  //i2C LCD Library
+
+// Set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#include <virtuabotixRTC.h>
+virtuabotixRTC myRTC(6, 7, 8);
+ 
+byte speaker= 9;
+
+boolean refreshLCD = true;
+
+void setup() {
+ 
+lcd.begin();
+Serial.begin(9600);
+byte speaker= 9;
+//myRTC.setDS1302Time(00, 20, 20, 02, 06, 05, 2018);
+lcd.setCursor(0,0);
+lcd.print("DIY Elektronik");
+lcd.setCursor(0,1);
+lcd.print("0813-3410-4742"); 
+delay(5000);
+//bangunDanPiketPagi();
+}
+
+
+void bangunDanPiketPagi()
+{
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+
+//sirine();
+
+}
+void piketSoreDanMandi()
+{
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+}
+void jamaahMaghrib()
+{
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+}
+void jamaahIsya()
+{
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+tone(speaker,100); delay(100); noTone(speaker); delay(50);
+delay(1000);
+}
+void sirine()
+{
+ int i = 400;
+  while(i < 900) {
+    i++;
+tone(speaker, i); delayMicroseconds(5000);
+  } 
+   int u = 900;
+  while(u >= 400) {
+    u--;
+   tone(speaker, u); delayMicroseconds(5000);
+ }
+  noTone(speaker);  
+}
+
+
+void loop() {
+myRTC.updateTime();
+  
+lcd.setCursor(0,0);
+lcd.print("Now   : ");
+lcd.print(myRTC.hours); 
+lcd.print(":");
+lcd.print(myRTC.minutes); 
+lcd.print(":");
+lcd.print(myRTC.seconds);
+
+if(myRTC.hours == 5 & myRTC.minutes == 0 & myRTC.seconds == 0){
+  bangunDanPiketPagi();
+}
+if(myRTC.hours == 17 & myRTC.minutes == 0 & myRTC.seconds == 0){
+ piketSoreDanMandi();
+}
+if(myRTC.hours == 18 & myRTC.minutes == 0 & myRTC.seconds == 0){
+ jamaahMaghrib();
+}
+if(myRTC.hours == 19 & myRTC.minutes == 0 & myRTC.seconds == 0){
+ jamaahIsya();
+ }
+ 
+if(myRTC.hours >= 1 & myRTC.hours < 5 ){
+  lcd.setCursor(0,1);
+  lcd.print("Alarm : 05:00:00 ");
+ }else if(myRTC.hours >= 5 & myRTC.hours < 17)
+ {
+  lcd.setCursor(0,1);
+  lcd.print("Alarm : 17:00:00 ");
+ }else if(myRTC.hours >= 17 & myRTC.hours < 18)
+ {
+  lcd.setCursor(0,1);
+  lcd.print("Alarm : 18:00:00 ");
+ }else if(myRTC.hours >= 18 & myRTC.hours < 19)
+ {
+  lcd.setCursor(0,1);
+  lcd.print("Alarm : 19:00:00 ");
+ }else if(myRTC.hours >= 19 & myRTC.hours < 24)
+ {
+  lcd.setCursor(0,1);
+  lcd.print("Alarm : 05:00:00 ");
+ }
+ 
+
+if(myRTC.seconds == 59){refreshLCD = false;}
+
+if(myRTC.seconds == 0 & refreshLCD == false){
+  
+  if(refreshLCD == false)
+  {
+  lcd.clear();
+  //delay(500);  
+  refreshLCD = true;
+  }
+ }
+ 
+}
